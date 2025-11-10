@@ -627,6 +627,76 @@ export interface ApiServicesCardServicesCard extends Struct.CollectionTypeSchema
   };
 }
 
+export interface ApiStructureCardStructureCard extends Struct.CollectionTypeSchema {
+  collectionName: "structure_cards";
+  info: {
+    displayName: "StructureCard";
+    pluralName: "structure-cards";
+    singularName: "structure-card";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    description: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::structure-card.structure-card">;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
+export interface ApiStructureSectionStructureSection extends Struct.SingleTypeSchema {
+  collectionName: "structure_sections";
+  info: {
+    displayName: "StructureSection";
+    pluralName: "structure-sections";
+    singularName: "structure-section";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::structure-section.structure-section">;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
 export interface PluginContentReleasesRelease extends Struct.CollectionTypeSchema {
   collectionName: "strapi_releases";
   info: {
@@ -1043,6 +1113,8 @@ declare module "@strapi/strapi" {
       "api::nav.nav": ApiNavNav;
       "api::service-section.service-section": ApiServiceSectionServiceSection;
       "api::services-card.services-card": ApiServicesCardServicesCard;
+      "api::structure-card.structure-card": ApiStructureCardStructureCard;
+      "api::structure-section.structure-section": ApiStructureSectionStructureSection;
       "plugin::content-releases.release": PluginContentReleasesRelease;
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction;
       "plugin::i18n.locale": PluginI18NLocale;

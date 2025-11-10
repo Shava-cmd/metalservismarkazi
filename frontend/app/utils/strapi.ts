@@ -3,6 +3,7 @@ import type { Nav } from "~/src/types/Nav";
 import type { AboutCard, AboutSection } from "~/src/types/About";
 import type { StrapiQueryMany, StrapiQueryOne } from "~/src/types/StrapiQuery";
 import type { ServiceSection, ServicesCard } from "~/src/types/Service";
+import type { StructureCard, StructureSection } from "~/src/types/Structure";
 
 const apiBaseUrl = useRuntimeConfig().public.apiEndpoint;
 
@@ -29,6 +30,14 @@ class StrapiUtils {
 
   public getServicesCards(currentLocale: string): Promise<StrapiQueryMany<ServicesCard>> {
     return $fetch<StrapiQueryMany<ServicesCard>>(`${apiBaseUrl}/api/services-cards`, this.queryParams(currentLocale));
+  }
+
+  public getStructureSection(currentLocale: string): Promise<StrapiQueryOne<StructureSection>> {
+    return $fetch<StrapiQueryOne<StructureSection>>(`${apiBaseUrl}/api/structure-section`, this.queryParams(currentLocale));
+  }
+
+  public getStructureCards(currentLocale: string): Promise<StrapiQueryMany<StructureCard>> {
+    return $fetch<StrapiQueryMany<StructureCard>>(`${apiBaseUrl}/api/structure-cards`, this.queryParams(currentLocale));
   }
 
   private queryParams(locale: string): { query: { populate: string; locale: string } } {

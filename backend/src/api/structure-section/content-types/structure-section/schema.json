@@ -1,0 +1,27 @@
+{
+  "kind": "singleType",
+  "collectionName": "structure_sections",
+  "info": {
+    "singularName": "structure-section",
+    "pluralName": "structure-sections",
+    "displayName": "StructureSection"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

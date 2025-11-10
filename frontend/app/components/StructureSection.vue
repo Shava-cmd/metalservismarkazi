@@ -1,7 +1,7 @@
 <template>
   <section id="structure" class="structure">
     <div class="container-section">
-      <h2 class="section-title structure__title">Структура предприятия</h2>
+      <h2 class="section-title structure__title">{{ structureSection?.data?.title }}</h2>
 
       <div class="structure__scroller" @mouseenter="paused = true" @mouseleave="paused = false">
         <div :class="['structure__track', 'marquee-track', { 'marquee-paused': paused }]">
@@ -17,35 +17,32 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref } from "vue";
 
-const items = [
+const currentLocale = useState<string>("locale", () => "ru");
+
+const { data: structureSection } = await useAsyncData(
+  `structureSection-${currentLocale.value}`,
+  () => strapi.getStructureSection(currentLocale.value),
   {
-    title: 'Ремонтно-механический цех (РМЦ)',
-    description: 'Ремонт и восстановление узлов, мехобработка крупногабаритных деталей.'
-  },
-  {
-    title: 'Литейно-механический цех (ЛМЦ)',
-    description: 'Литьё стали, чугуна и бронзы; термообработка; мехобработка отливок.'
-  },
-  {
-    title: 'Цех металлоконструкций (ЦМК)',
-    description: 'Изготовление, сборка и монтаж металлоконструкций.'
-  },
-  {
-    title: 'Электроремонтный цех (ЭлРЦ)',
-    description: 'Ремонт электродвигателей и электроаппаратуры; испытания.'
-  },
-  {
-    title: 'Механический цех (г. Ширин)',
-    description: 'Станочная обработка, шлифование, токарные и фрезерные операции.'
+    watch: [currentLocale],
   }
-]
+);
 
-const paused = ref(false)
+const { data: structureCard } = await useAsyncData(
+  `structureCard-${currentLocale.value}`,
+  () => strapi.getStructureCards(currentLocale.value),
+  {
+    watch: [currentLocale],
+  }
+);
+
+const items = computed(() => structureCard.value?.data || []);
+
+const paused = ref(false);
 const duplicatedItems = computed(() =>
-  [...items, ...items].map((entry, index) => ({ ...entry, uid: `${entry.title}-${index}` }))
-)
+  [...items.value, ...items.value].map((entry, index) => ({ ...entry, uid: `${entry.title}-${index}` }))
+);
 </script>
 
 <style scoped>
