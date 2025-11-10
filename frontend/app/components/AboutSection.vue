@@ -1,15 +1,14 @@
 <template>
   <section id="about" class="about">
     <div class="container-section">
-      <h2 class="section-title about__title">О компании</h2>
+      <h2 class="section-title about__title">{{ aboutSection?.data?.title }}</h2>
 
       <div class="about__text">
-        <p>ООО «Металлургия Сервис Маркази» — дочернее предприятие АО «Узметкомбинат», основанное в 2025 году (г. Ширин).</p>
-        <p>Наша миссия — обеспечивать бесперебойную работу промышленного оборудования: ремонт, мехобработка, литьё и производство металлоконструкций.</p>
+        <p v-html="aboutSection?.data?.text"></p>
       </div>
 
       <div class="about__grid">
-        <article v-for="feature in features" :key="feature.title" class="about__card">
+        <article v-for="feature in aboutCards?.data" :key="feature.documentId" class="about__card">
           <h3 class="about__card-title">{{ feature.title }}</h3>
           <p class="about__card-text">{{ feature.description }}</p>
         </article>
@@ -19,12 +18,23 @@
 </template>
 
 <script setup lang="ts">
-const features = [
-  { title: 'Полный цикл', description: 'От литья до сборки' },
-  { title: '541 сотрудник', description: 'Опытный персонал' },
-  { title: '140 станков', description: 'Современное оборудование' },
-  { title: 'ISO стандарты', description: 'Контроль качества' }
-]
+const currentLocale = useState<string>("locale", () => "ru");
+
+const { data: aboutSection } = await useAsyncData(
+  `aboutSection-${currentLocale.value}`,
+  () => strapi.getAboutSection(currentLocale.value),
+  {
+    watch: [currentLocale],
+  }
+);
+
+const { data: aboutCards } = await useAsyncData(
+  `aboutCards-${currentLocale.value}`,
+  () => strapi.getAboutCards(currentLocale.value),
+  {
+    watch: [currentLocale],
+  }
+);
 </script>
 
 <style scoped>

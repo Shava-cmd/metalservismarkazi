@@ -84,7 +84,7 @@ const locales = [
   { code: "ru", label: "РУ" },
   { code: "uz-Cyrl", label: "ЎЗ" },
 ];
-const currentLocale = useState<string>("locale", () => "ru");
+const currentLocale = useState<string>("locale", () => locales[0]?.code || "ru");
 
 const { data: navItems } = await useAsyncData(
   `navs-${currentLocale.value}`,
@@ -127,6 +127,7 @@ onMounted(() => {
     if (storedLang && storedLang !== currentLocale.value && storedLang in locales.map((l) => l.code)) {
       currentLocale.value = storedLang;
     } else if (!storedLang) {
+      currentLocale.value = locales[0]?.code || "ru";
       localStorage.setItem("lang", currentLocale.value);
     }
   }
