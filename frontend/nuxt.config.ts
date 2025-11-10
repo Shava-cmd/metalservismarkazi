@@ -1,6 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 
-const apiEndpointAddress = "localhost:1337";
+const apiEndpointAddress = "http://localhost:1337";
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',

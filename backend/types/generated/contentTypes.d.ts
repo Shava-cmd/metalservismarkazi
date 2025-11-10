@@ -551,12 +551,44 @@ export interface ApiNavNav extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiSecvicesCardSecvicesCard extends Struct.CollectionTypeSchema {
-  collectionName: "secvices_cards";
+export interface ApiServiceSectionServiceSection extends Struct.SingleTypeSchema {
+  collectionName: "service_sections";
   info: {
-    displayName: "SecvicesCard";
-    pluralName: "secvices-cards";
-    singularName: "secvices-card";
+    displayName: "ServiceSection";
+    pluralName: "service-sections";
+    singularName: "service-section";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::service-section.service-section">;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
+export interface ApiServicesCardServicesCard extends Struct.CollectionTypeSchema {
+  collectionName: "services_cards";
+  info: {
+    displayName: "ServicesCard";
+    pluralName: "services-cards";
+    singularName: "services-card";
   };
   options: {
     draftAndPublish: true;
@@ -582,7 +614,7 @@ export interface ApiSecvicesCardSecvicesCard extends Struct.CollectionTypeSchema
         };
       }>;
     locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<"oneToMany", "api::secvices-card.secvices-card">;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::services-card.services-card">;
     publishedAt: Schema.Attribute.DateTime;
     title: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
@@ -590,32 +622,6 @@ export interface ApiSecvicesCardSecvicesCard extends Struct.CollectionTypeSchema
           localized: true;
         };
       }>;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
-  };
-}
-
-export interface ApiServicesSectionServicesSection extends Struct.SingleTypeSchema {
-  collectionName: "services_sections";
-  info: {
-    displayName: "ServicesSection";
-    pluralName: "services-sections";
-    singularName: "services-section";
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  pluginOptions: {
-    i18n: {
-      localized: true;
-    };
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
-    locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<"oneToMany", "api::services-section.services-section">;
-    publishedAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
   };
@@ -1035,8 +1041,8 @@ declare module "@strapi/strapi" {
       "api::about-section.about-section": ApiAboutSectionAboutSection;
       "api::hero-section.hero-section": ApiHeroSectionHeroSection;
       "api::nav.nav": ApiNavNav;
-      "api::secvices-card.secvices-card": ApiSecvicesCardSecvicesCard;
-      "api::services-section.services-section": ApiServicesSectionServicesSection;
+      "api::service-section.service-section": ApiServiceSectionServiceSection;
+      "api::services-card.services-card": ApiServicesCardServicesCard;
       "plugin::content-releases.release": PluginContentReleasesRelease;
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction;
       "plugin::i18n.locale": PluginI18NLocale;

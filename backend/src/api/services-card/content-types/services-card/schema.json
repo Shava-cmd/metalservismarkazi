@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "secvices_cards",
+  "collectionName": "services_cards",
   "info": {
-    "singularName": "secvices-card",
-    "pluralName": "secvices-cards",
-    "displayName": "SecvicesCard"
+    "singularName": "services-card",
+    "pluralName": "services-cards",
+    "displayName": "ServicesCard"
   },
   "options": {
     "draftAndPublish": true

@@ -1,11 +1,20 @@
 <template>
   <section id="services" class="services">
     <div class="container-section">
-      <h2 class="section-title services__title">Продукция и услуги</h2>
+      <h2 class="section-title services__title">{{ serviceSection?.data?.title }}</h2>
 
       <div class="services__grid">
-        <article v-for="service in services" :key="service.title" class="services__card">
-          <div class="services__image" :style="{ backgroundImage: `url(${service.image})` }" />
+        <article v-for="service in servicesCard?.data" :key="service.title" class="services__card">
+          <div
+            v-if="service?.image?.formats?.thumbnail"
+            class="services__image"
+            :style="{ backgroundImage: `url(${apiEndpoint}${service?.image?.formats?.thumbnail?.url})` }"
+          />
+          <div
+            v-else
+            class="services__image"
+            :style="{ backgroundImage: `url(${apiEndpoint}${service?.image?.formats?.small?.url})` }"
+          />
           <div class="services__body">
             <h3>{{ service.title }}</h3>
             <p>{{ service.description }}</p>
@@ -18,31 +27,24 @@
 </template>
 
 <script setup lang="ts">
-import strapi from "~/utils/strapi";
+const currentLocale = useState<string>("locale", () => "ru");
+const apiEndpoint = useRuntimeConfig().public.apiEndpoint;
 
-const services = [
+const { data: serviceSection } = await useAsyncData(
+  `serviceSection-${currentLocale.value}`,
+  () => strapi.getServiceSection(currentLocale.value),
   {
-    title: "Мехобработка и ремонт",
-    description: "Токарные, фрезерные, шлифовальные работы. Реставрация узлов и деталей.",
-    image: "https://rmz43.ru/wp-content/uploads/2020/03/zakazi-na-metalloobrabotku.jpg",
-  },
+    watch: [currentLocale],
+  }
+);
+
+const { data: servicesCard } = await useAsyncData(
+  `servicesCard-${currentLocale.value}`,
+  () => strapi.getServicesCards(currentLocale.value),
   {
-    title: "Литьё стали, чугуна и бронзы",
-    description: "Изготовление отливок по ТЗ. Термообработка и контроль качества.",
-    image:
-      "https://files.glotr.uz/company/000/035/018/products/2023/12/21/2023-12-21-02-18-55-958352-ec91029bb2bbdca6f7035e00f6047187.webp?_=ozb9y",
-  },
-  {
-    title: "Металлоконструкции",
-    description: "Изготовление и монтаж металлоконструкций любой сложности.",
-    image: "https://scmet.ru/img/blog/statya-bloga/1605635680_metallicheskie-konstrukczii.jpg",
-  },
-  {
-    title: "Электроремонт и сборка",
-    description: "Ремонт электродвигателей, сборка электроаппаратуры, испытания.",
-    image: "https://svet.uz/wp-content/uploads/2021/07/unnamed.jpeg",
-  },
-];
+    watch: [currentLocale],
+  }
+);
 </script>
 
 <style scoped>

@@ -1,14 +1,14 @@
 <template>
   <div>
-    <HeroSection />
-    <AboutSection />
+    <!-- <HeroSection />
+    <AboutSection /> -->
     <ServicesSection />
-    <StructureSection />
+    <!-- <StructureSection />
     <CapacitySection />
     <AdvantagesSection />
     <GallerySection />
     <PartnersSection />
-    <ContactSection />
+    <ContactSection /> -->
   </div>
 </template>
 
