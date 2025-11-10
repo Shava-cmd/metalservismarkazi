@@ -6,40 +6,29 @@ import type { StrapiQueryMany, StrapiQueryOne } from "~/src/types/StrapiQuery";
 const apiBaseUrl = "http://localhost:1337";
 
 class StrapiUtils {
-  getHeroSection(currentLocale: string): Promise<StrapiQueryOne<HeroSection>> {
-    return $fetch<StrapiQueryOne<HeroSection>>(`${apiBaseUrl}/api/hero-section`, {
-      query: {
-        populate: "*",
-        locale: currentLocale,
-      },
-    });
+  public getHeroSection(currentLocale: string): Promise<StrapiQueryOne<HeroSection>> {
+    return $fetch<StrapiQueryOne<HeroSection>>(`${apiBaseUrl}/api/hero-section`, this.queryParams(currentLocale));
   }
 
-  getNavItems(currentLocale: string): Promise<StrapiQueryMany<Nav>> {
-    return $fetch<StrapiQueryMany<Nav>>(`${apiBaseUrl}/api/navs`, {
-      query: {
-        populate: "*",
-        locale: currentLocale,
-      },
-    });
+  public getNavItems(currentLocale: string): Promise<StrapiQueryMany<Nav>> {
+    return $fetch<StrapiQueryMany<Nav>>(`${apiBaseUrl}/api/navs`, this.queryParams(currentLocale));
   }
 
-  getAboutSection(currentLocale: string): Promise<StrapiQueryOne<AboutSection>> {
-    return $fetch<StrapiQueryOne<AboutSection>>(`${apiBaseUrl}/api/about-section`, {
-      query: {
-        populate: "*",
-        locale: currentLocale,
-      },
-    });
+  public getAboutSection(currentLocale: string): Promise<StrapiQueryOne<AboutSection>> {
+    return $fetch<StrapiQueryOne<AboutSection>>(`${apiBaseUrl}/api/about-section`, this.queryParams(currentLocale));
   }
 
-  getAboutCards(currentLocale: string): Promise<StrapiQueryMany<AboutCard>> {
-    return $fetch<StrapiQueryMany<AboutCard>>(`${apiBaseUrl}/api/about-cards`, {
+  public getAboutCards(currentLocale: string): Promise<StrapiQueryMany<AboutCard>> {
+    return $fetch<StrapiQueryMany<AboutCard>>(`${apiBaseUrl}/api/about-cards`, this.queryParams(currentLocale));
+  }
+
+  private queryParams(locale: string): { query: { populate: string; locale: string } } {
+    return {
       query: {
         populate: "*",
-        locale: currentLocale,
+        locale: locale,
       },
-    });
+    };
   }
 }
 

@@ -78,13 +78,17 @@
 </template>
 
 <script setup lang="ts">
-import strapi from "@/utils/strapi";
+import strapi from "~/utils/strapi";
 
 const locales = [
   { code: "ru", label: "РУ" },
   { code: "uz-Cyrl", label: "ЎЗ" },
 ];
-const currentLocale = useState<string>("locale", () => locales[0]?.code || "ru");
+const currentLocale = useState<string>("locale");
+
+if (!currentLocale.value) {
+  setLocale("ru");
+}
 
 const { data: navItems } = await useAsyncData(
   `navs-${currentLocale.value}`,
@@ -97,40 +101,40 @@ const { data: navItems } = await useAsyncData(
 const isScrolled = ref(false);
 const mobileOpen = ref(false);
 
-const handleScroll = () => {
+function handleScroll() {
   isScrolled.value = window.scrollY > 60;
-};
+}
 
-const scrollToSection = (id: string) => {
+function scrollToSection(id: string) {
   const target = document.getElementById(id);
   if (target) {
     target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
   mobileOpen.value = false;
-};
+}
 
-const toggleMobile = () => {
+function toggleMobile() {
   mobileOpen.value = !mobileOpen.value;
-};
+}
 
-const setLocale = (value: string) => {
+function setLocale(value: string) {
   currentLocale.value = value;
   if (import.meta.client) localStorage.setItem("lang", value);
-};
+}
 
 onMounted(() => {
-  handleScroll();
-  window.addEventListener("scroll", handleScroll, { passive: true });
-
   if (import.meta.client) {
     const storedLang = localStorage.getItem("lang");
-    if (storedLang && storedLang !== currentLocale.value && storedLang in locales.map((l) => l.code)) {
+    if (storedLang && storedLang !== currentLocale.value) {
       currentLocale.value = storedLang;
     } else if (!storedLang) {
       currentLocale.value = locales[0]?.code || "ru";
       localStorage.setItem("lang", currentLocale.value);
     }
   }
+
+  handleScroll();
+  window.addEventListener("scroll", handleScroll, { passive: true });
 });
 
 onBeforeUnmount(() => {

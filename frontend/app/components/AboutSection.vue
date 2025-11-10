@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-const currentLocale = useState<string>("locale", () => "ru");
+const currentLocale = useState<string>("locale");
 
 const { data: aboutSection } = await useAsyncData(
   `aboutSection-${currentLocale.value}`,

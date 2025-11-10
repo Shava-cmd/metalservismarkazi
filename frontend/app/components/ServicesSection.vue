@@ -18,28 +18,31 @@
 </template>
 
 <script setup lang="ts">
+import strapi from "~/utils/strapi";
+
 const services = [
   {
-    title: 'Мехобработка и ремонт',
-    description: 'Токарные, фрезерные, шлифовальные работы. Реставрация узлов и деталей.',
-    image: 'https://rmz43.ru/wp-content/uploads/2020/03/zakazi-na-metalloobrabotku.jpg'
+    title: "Мехобработка и ремонт",
+    description: "Токарные, фрезерные, шлифовальные работы. Реставрация узлов и деталей.",
+    image: "https://rmz43.ru/wp-content/uploads/2020/03/zakazi-na-metalloobrabotku.jpg",
   },
   {
-    title: 'Литьё стали, чугуна и бронзы',
-    description: 'Изготовление отливок по ТЗ. Термообработка и контроль качества.',
-    image: 'https://files.glotr.uz/company/000/035/018/products/2023/12/21/2023-12-21-02-18-55-958352-ec91029bb2bbdca6f7035e00f6047187.webp?_=ozb9y'
+    title: "Литьё стали, чугуна и бронзы",
+    description: "Изготовление отливок по ТЗ. Термообработка и контроль качества.",
+    image:
+      "https://files.glotr.uz/company/000/035/018/products/2023/12/21/2023-12-21-02-18-55-958352-ec91029bb2bbdca6f7035e00f6047187.webp?_=ozb9y",
   },
   {
-    title: 'Металлоконструкции',
-    description: 'Изготовление и монтаж металлоконструкций любой сложности.',
-    image: 'https://scmet.ru/img/blog/statya-bloga/1605635680_metallicheskie-konstrukczii.jpg'
+    title: "Металлоконструкции",
+    description: "Изготовление и монтаж металлоконструкций любой сложности.",
+    image: "https://scmet.ru/img/blog/statya-bloga/1605635680_metallicheskie-konstrukczii.jpg",
   },
   {
-    title: 'Электроремонт и сборка',
-    description: 'Ремонт электродвигателей, сборка электроаппаратуры, испытания.',
-    image: 'https://svet.uz/wp-content/uploads/2021/07/unnamed.jpeg'
-  }
-]
+    title: "Электроремонт и сборка",
+    description: "Ремонт электродвигателей, сборка электроаппаратуры, испытания.",
+    image: "https://svet.uz/wp-content/uploads/2021/07/unnamed.jpeg",
+  },
+];
 </script>
 
 <style scoped>
