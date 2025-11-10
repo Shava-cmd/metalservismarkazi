@@ -4,13 +4,11 @@
     <main>
       <slot />
     </main>
-    <SiteFooter />
+    <!-- <SiteFooter /> -->
   </div>
 </template>
 
 <script setup lang="ts">
-import AppHeader from '~/components/AppHeader.vue'
-import SiteFooter from '~/components/SiteFooter.vue'
 </script>
 
 <style scoped>

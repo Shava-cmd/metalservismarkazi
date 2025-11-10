@@ -3,19 +3,32 @@
     <div class="hero__overlay" />
 
     <div class="container-section hero__content">
-      <span class="hero__badge">Metallurgiya Servis Markazi</span>
-      <h1 class="hero__title">ООО «Металлургия Сервис Маркази» — производство, ремонт и литьё для металлургии</h1>
-      <p class="hero__subtitle">Предприятие с полным технологическим циклом — от литья до готовых деталей.</p>
+      <span class="hero__badge">{{ page?.data?.badge }}</span>
+      <h1 class="hero__title">{{ page?.data?.title }}</h1>
+      <p class="hero__subtitle">{{ page?.data?.subtitle }}</p>
 
       <div class="hero__actions">
-        <a class="btn-primary hero__button" href="#contact">Связаться с нами</a>
-        <a class="hero__secondary" href="#services">Запросить прайс</a>
+        <a class="btn-primary hero__button" href="#contact">{{ page?.data?.contact }}</a>
+        <a class="hero__secondary" href="#services">{{ page?.data?.askPrice }}</a>
       </div>
     </div>
 
     <div class="hero__gradient" />
   </section>
 </template>
+
+<script setup lang="ts">
+import strapi from "@/utils/strapi";
+const currentLocale = useState<string>("locale", () => "ru");
+
+const { data: page } = await useAsyncData(
+  `heroSection-${currentLocale.value}`,
+  () => strapi.getHeroSection(currentLocale.value),
+  {
+    watch: [currentLocale],
+  }
+);
+</script>
 
 <style scoped>
 .hero {
@@ -24,7 +37,7 @@
   display: grid;
   place-items: center;
   padding-block: clamp(5rem, 12vw, 8rem);
-  background-image: url('https://www.uzbeksteel.uz/storage/images/1732174594.jpg');
+  background-image: url("https://www.uzbeksteel.uz/storage/images/1732174594.jpg");
   background-size: cover;
   background-position: center;
   color: #fff;

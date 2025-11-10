@@ -1,17 +1,15 @@
 <template>
   <header :class="['site-header', { 'site-header--scrolled': isScrolled }]">
     <div class="container-section site-header__inner">
-      <button class="site-header__logo" type="button" @click="scrollToSection('hero')">
-        MSM
-      </button>
+      <button class="site-header__logo" type="button" @click="scrollToSection('hero')">MSM</button>
 
       <nav class="site-header__nav">
         <button
-          v-for="item in navItems"
-          :key="item.id"
+          v-for="item in navItems?.data"
+          :key="item.navID"
           class="site-header__nav-link"
           type="button"
-          @click="scrollToSection(item.id)"
+          @click="scrollToSection(item.navID)"
         >
           {{ item.label }}
         </button>
@@ -21,12 +19,12 @@
         <div class="site-header__locale">
           <button
             v-for="option in locales"
-            :key="option"
-            :class="['site-header__locale-btn', { 'site-header__locale-btn--active': option === activeLocale }]"
+            :key="option.code"
+            :class="['site-header__locale-btn', { 'site-header__locale-btn--active': option.code === currentLocale }]"
             type="button"
-            @click="setLocale(option)"
+            @click="setLocale(option.code)"
           >
-            {{ option.toUpperCase() }}
+            {{ option.label.toUpperCase() }}
           </button>
         </div>
 
@@ -51,11 +49,11 @@
     <nav :class="['site-header__mobile', { 'site-header__mobile--open': mobileOpen }]">
       <div class="container-section">
         <button
-          v-for="item in navItems"
-          :key="item.id"
+          v-for="item in navItems?.data"
+          :key="item.navID"
           class="site-header__mobile-link"
           type="button"
-          @click="scrollToSection(item.id)"
+          @click="scrollToSection(item.navID)"
         >
           {{ item.label }}
         </button>
@@ -63,12 +61,15 @@
         <div class="site-header__mobile-locale">
           <button
             v-for="option in locales"
-            :key="option"
-            :class="['site-header__mobile-locale-btn', { 'site-header__mobile-locale-btn--active': option === activeLocale }]"
+            :key="option.code"
+            :class="[
+              'site-header__mobile-locale-btn',
+              { 'site-header__mobile-locale-btn--active': option.code === currentLocale },
+            ]"
             type="button"
-            @click="setLocale(option)"
+            @click="setLocale(option.code)"
           >
-            {{ option.toUpperCase() }}
+            {{ option.label.toUpperCase() }}
           </button>
         </div>
       </div>
@@ -77,47 +78,63 @@
 </template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import strapi from "@/utils/strapi";
 
-const navItems = [
-  { id: 'about', label: 'О компании' },
-  { id: 'services', label: 'Услуги' },
-  { id: 'contact', label: 'Контакты' }
-]
+const locales = [
+  { code: "ru", label: "РУ" },
+  { code: "uz-Cyrl", label: "ЎЗ" },
+];
+const currentLocale = useState<string>("locale", () => "ru");
 
-const locales = ['ru', 'uz'] as const
-const activeLocale = ref<typeof locales[number]>('ru')
-const isScrolled = ref(false)
-const mobileOpen = ref(false)
+const { data: navItems } = await useAsyncData(
+  `navs-${currentLocale.value}`,
+  () => strapi.getNavItems(currentLocale.value),
+  {
+    watch: [currentLocale],
+  }
+);
+
+const isScrolled = ref(false);
+const mobileOpen = ref(false);
 
 const handleScroll = () => {
-  isScrolled.value = window.scrollY > 60
-}
+  isScrolled.value = window.scrollY > 60;
+};
 
 const scrollToSection = (id: string) => {
-  const target = document.getElementById(id)
+  const target = document.getElementById(id);
   if (target) {
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
-  mobileOpen.value = false
-}
+  mobileOpen.value = false;
+};
 
 const toggleMobile = () => {
-  mobileOpen.value = !mobileOpen.value
-}
+  mobileOpen.value = !mobileOpen.value;
+};
 
-const setLocale = (value: typeof locales[number]) => {
-  activeLocale.value = value
-}
+const setLocale = (value: string) => {
+  currentLocale.value = value;
+  if (import.meta.client) localStorage.setItem("lang", value);
+};
 
 onMounted(() => {
-  handleScroll()
-  window.addEventListener('scroll', handleScroll, { passive: true })
-})
+  handleScroll();
+  window.addEventListener("scroll", handleScroll, { passive: true });
+
+  if (import.meta.client) {
+    const storedLang = localStorage.getItem("lang");
+    if (storedLang && storedLang !== currentLocale.value && storedLang in locales.map((l) => l.code)) {
+      currentLocale.value = storedLang;
+    } else if (!storedLang) {
+      localStorage.setItem("lang", currentLocale.value);
+    }
+  }
+});
 
 onBeforeUnmount(() => {
-  window.removeEventListener('scroll', handleScroll)
-})
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <style scoped>
