@@ -11,9 +11,7 @@ services:
     environment:
       - NODE_ENV=production
       - NUXT_HOST=0.0.0.0
-      - NUXT_PORT=3000
-    networks:
-      - strapi-network
+      - NUXT_PORT=3000    
     depends_on:
       - backend
 

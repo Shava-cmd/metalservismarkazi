@@ -30,5 +30,9 @@ To build and run the production Docker containers for the frontend and backend s
 ```bash
 docker compose up --build -d
 ```
+or
+```bash
+podman compose up --build -d
+```
 
 Site is avalilable at `http://localhost:3000`.

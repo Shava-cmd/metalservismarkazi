@@ -5,6 +5,7 @@ const apiEndpointAddress = "localhost:1337";
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },  
+  ssr: false,
 
   runtimeConfig: {
     public: { apiEndpoint: apiEndpointAddress },

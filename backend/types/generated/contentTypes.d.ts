@@ -595,12 +595,12 @@ export interface ApiSecvicesCardSecvicesCard extends Struct.CollectionTypeSchema
   };
 }
 
-export interface ApiSecvicesSectionSecvicesSection extends Struct.SingleTypeSchema {
-  collectionName: "secvices_sections";
+export interface ApiServicesSectionServicesSection extends Struct.SingleTypeSchema {
+  collectionName: "services_sections";
   info: {
-    displayName: "SecvicesSection";
-    pluralName: "secvices-sections";
-    singularName: "secvices-section";
+    displayName: "ServicesSection";
+    pluralName: "services-sections";
+    singularName: "services-section";
   };
   options: {
     draftAndPublish: true;
@@ -614,14 +614,8 @@ export interface ApiSecvicesSectionSecvicesSection extends Struct.SingleTypeSche
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
     locale: Schema.Attribute.String;
-    localizations: Schema.Attribute.Relation<"oneToMany", "api::secvices-section.secvices-section">;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::services-section.services-section">;
     publishedAt: Schema.Attribute.DateTime;
-    title: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
   };
@@ -1042,7 +1036,7 @@ declare module "@strapi/strapi" {
       "api::hero-section.hero-section": ApiHeroSectionHeroSection;
       "api::nav.nav": ApiNavNav;
       "api::secvices-card.secvices-card": ApiSecvicesCardSecvicesCard;
-      "api::secvices-section.secvices-section": ApiSecvicesSectionSecvicesSection;
+      "api::services-section.services-section": ApiServicesSectionServicesSection;
       "plugin::content-releases.release": PluginContentReleasesRelease;
       "plugin::content-releases.release-action": PluginContentReleasesReleaseAction;
       "plugin::i18n.locale": PluginI18NLocale;
