@@ -1,0 +1,39 @@
+{
+  "kind": "singleType",
+  "collectionName": "gallery_sections",
+  "info": {
+    "singularName": "gallery-section",
+    "pluralName": "gallery-sections",
+    "displayName": "GallerySection"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "images": {
+      "type": "media",
+      "pluginOptions": {
+        "i18n": {
+          "localized": false
+        }
+      },
+      "multiple": true,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

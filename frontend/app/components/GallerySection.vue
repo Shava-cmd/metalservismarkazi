@@ -1,22 +1,23 @@
 <template>
   <section id="gallery" class="gallery">
     <div class="container-section">
-      <h2 class="section-title gallery__title">Производство</h2>
+      <h2 class="section-title gallery__title">{{ gallerySection?.data?.title }}</h2>
 
       <div class="gallery__wrapper">
-        <button class="gallery__control" type="button" aria-label="Назад" @click="prevSlide">
-          ⟵
-        </button>
+        <button class="gallery__control" type="button" aria-label="Назад" @click="prevSlide">⟵</button>
 
         <div class="gallery__stage">
           <TransitionGroup name="fade" tag="div" class="gallery__slides">
-            <div v-if="currentImage" :key="currentImage" class="gallery__slide" :style="{ backgroundImage: `url(${currentImage})` }" />
+            <div
+              v-if="currentImage"
+              :key="currentImage"
+              class="gallery__slide"
+              :style="{ backgroundImage: `url(${currentImage})` }"
+            />
           </TransitionGroup>
         </div>
 
-        <button class="gallery__control" type="button" aria-label="Вперёд" @click="nextSlide">
-          ⟶
-        </button>
+        <button class="gallery__control" type="button" aria-label="Вперёд" @click="nextSlide">⟶</button>
       </div>
 
       <div class="gallery__dots">
@@ -34,75 +35,62 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
+const currentLocale = useState<string>("locale", () => "ru");
+const apiEndpoint = useRuntimeConfig().public.apiEndpoint;
 
-const rawImages = [
-  'IMAGE 2025-10-31 15:25:34.jpg',
-  'IMAGE 2025-10-31 15:25:37.jpg',
-  'IMAGE 2025-10-31 15:25:42.jpg',
-  'IMAGE 2025-10-31 15:25:46.jpg',
-  'IMAGE 2025-10-31 15:25:48.jpg',
-  'IMAGE 2025-10-31 15:25:50.jpg',
-  'IMAGE 2025-10-31 15:25:53.jpg',
-  'IMAGE 2025-10-31 15:25:55.jpg',
-  'IMAGE 2025-10-31 15:25:57.jpg',
-  'IMAGE 2025-10-31 15:25:59.jpg',
-  'IMAGE 2025-10-31 15:26:05.jpg',
-  'IMAGE 2025-10-31 15:26:07.jpg',
-  'IMAGE 2025-10-31 15:26:08.jpg',
-  'IMAGE 2025-10-31 15:26:10.jpg',
-  'IMAGE 2025-10-31 15:26:12.jpg',
-  'IMAGE 2025-10-31 15:26:15.jpg',
-  'IMAGE 2025-10-31 15:26:18.jpg',
-  'IMAGE 2025-10-31 15:26:22.jpg',
-  'IMAGE 2025-10-31 15:26:25.jpg'
-]
+const { data: gallerySection } = await useAsyncData(
+  `gallerySection-${currentLocale.value}`,
+  () => strapi.getGallerySection(currentLocale.value),
+  {
+    watch: [currentLocale],
+  }
+);
 
-const images = rawImages.map((file) => `/process/${encodeURIComponent(file)}`)
-const activeIndex = ref(0)
-const intervalId = ref<number | null>(null)
+const images = gallerySection.value?.data?.images.map((img) => `${apiEndpoint}${img.url}`) || [];
+const activeIndex = ref(0);
+const intervalId = ref<number | null>(null);
 
-const currentImage = computed(() => images[activeIndex.value])
+const currentImage = computed(() => images[activeIndex.value]);
 
 const nextSlide = () => {
-  activeIndex.value = (activeIndex.value + 1) % images.length
-}
+  activeIndex.value = (activeIndex.value + 1) % images.length;
+};
 
 const prevSlide = () => {
-  activeIndex.value = (activeIndex.value - 1 + images.length) % images.length
-}
+  activeIndex.value = (activeIndex.value - 1 + images.length) % images.length;
+};
 
 const goTo = (index: number) => {
-  activeIndex.value = index
-  resetTimer()
-}
+  activeIndex.value = index;
+  resetTimer();
+};
 
 const startTimer = () => {
-  stopTimer()
+  stopTimer();
   intervalId.value = window.setInterval(() => {
-    nextSlide()
-  }, 5000)
-}
+    nextSlide();
+  }, 5000);
+};
 
 const stopTimer = () => {
   if (intervalId.value) {
-    clearInterval(intervalId.value)
-    intervalId.value = null
+    clearInterval(intervalId.value);
+    intervalId.value = null;
   }
-}
+};
 
 const resetTimer = () => {
-  stopTimer()
-  startTimer()
-}
+  stopTimer();
+  startTimer();
+};
 
 onMounted(() => {
-  startTimer()
-})
+  startTimer();
+});
 
 onBeforeUnmount(() => {
-  stopTimer()
-})
+  stopTimer();
+});
 </script>
 
 <style scoped>

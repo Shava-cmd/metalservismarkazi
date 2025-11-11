@@ -603,6 +603,44 @@ export interface ApiCapacitySectionCapacitySection extends Struct.SingleTypeSche
   };
 }
 
+export interface ApiGallerySectionGallerySection extends Struct.SingleTypeSchema {
+  collectionName: "gallery_sections";
+  info: {
+    displayName: "GallerySection";
+    pluralName: "gallery-sections";
+    singularName: "gallery-section";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    images: Schema.Attribute.Media<"images", true> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::gallery-section.gallery-section">;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiHeroSectionHeroSection extends Struct.SingleTypeSchema {
   collectionName: "hero_sections";
   info: {
@@ -1329,6 +1367,7 @@ declare module "@strapi/strapi" {
       "api::advantages-section.advantages-section": ApiAdvantagesSectionAdvantagesSection;
       "api::capacity-card.capacity-card": ApiCapacityCardCapacityCard;
       "api::capacity-section.capacity-section": ApiCapacitySectionCapacitySection;
+      "api::gallery-section.gallery-section": ApiGallerySectionGallerySection;
       "api::hero-section.hero-section": ApiHeroSectionHeroSection;
       "api::machine-card.machine-card": ApiMachineCardMachineCard;
       "api::machine-section.machine-section": ApiMachineSectionMachineSection;
