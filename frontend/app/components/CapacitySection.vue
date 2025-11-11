@@ -1,21 +1,24 @@
 <template>
   <section id="capacity" class="capacity">
     <div class="container-section">
-      <h2 class="section-title capacity__title">Производственные мощности</h2>
+      <h2 class="section-title capacity__title">{{ capacitySection?.data?.title }}</h2>
 
       <div class="capacity__stats">
-        <article v-for="stat in stats" :key="stat.label" class="capacity__stat-card">
+        <article v-for="stat in capacityCards?.data" :key="stat.label" class="capacity__stat-card">
           <span class="capacity__stat-value">{{ stat.value }}</span>
           <span class="capacity__stat-label">{{ stat.label }}</span>
         </article>
       </div>
 
-        <div class="capacity__park">
-        <h3>Станочный парк</h3>
+      <div class="capacity__park">
+        <h3>{{ machineSection?.data?.title }}</h3>
         <div class="capacity__carousel" @mouseenter="paused = true" @mouseleave="paused = false">
-            <div :class="['capacity__track', 'marquee-track', { 'marquee-paused': paused }]">
+          <div :class="['capacity__track', 'marquee-track', { 'marquee-paused': paused }]">
             <article v-for="machine in duplicatedMachines" :key="machine.uid" class="capacity__machine">
-              <div class="capacity__machine-image" :style="{ backgroundImage: `url(${machine.image})` }" />
+              <div
+                class="capacity__machine-image"
+                :style="{ backgroundImage: `url(${apiEndpoint}${machine?.image?.formats?.thumbnail?.url})` }"
+              />
               <span class="capacity__machine-title">{{ machine.title }}</span>
             </article>
           </div>
@@ -26,34 +29,49 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref } from "vue";
 
-const stats = [
-  { value: '650 т', label: 'Литья в год' },
-  { value: '244 000', label: 'Станко-часов' },
-  { value: '140', label: 'Единиц станков' }
-]
+const currentLocale = useState<string>("locale", () => "ru");
+const apiEndpoint = useRuntimeConfig().public.apiEndpoint;
 
-const machines = [
+const { data: capacityCards } = await useAsyncData(
+  `capacityCards-${currentLocale.value}`,
+  () => strapi.getCapacityCards(currentLocale.value),
   {
-    title: 'Токарные',
-    image: 'https://fenixcnc.ru/images/wss/articles/2022/02/41-orden-cherepakhi-pochemu-sssr-byl-liderom-v-metalloobrabotke-i-samye-izvestnye-tokarnye-stanki-po-metallu.jpg'
-  },
-  { title: 'Фрезерные', image: 'https://api.cabinet.smart-market.uz/uploads/images/ff8081815fd38e694c1d5e64' },
-  {
-    title: 'Шлифовальные',
-    image: 'https://www.smsm.ru/upload/ammina.optimizer/jpg-webp/q80/articles/Poverhnostno-shlifovalnyj%20stanok.webp'
-  },
-  { title: 'Сверлильные', image: 'https://uzstanex.uz/wp-content/uploads/2017/06/00006647-600x450.jpg' },
-  { title: 'Расточные', image: 'https://www.stanki-snab.ru/cache/images/original_ic/public/modules/gr90.5089545c.png' },
-  { title: 'Отрезные', image: 'https://www.stanki.ru/upload/iblock/e5d/r7c35a4m8qqawxg39hnui86soo2ah15a.jpg' }
-]
+    watch: [currentLocale],
+  }
+);
 
-const paused = ref(false)
+const { data: capacitySection } = await useAsyncData(
+  `capacitySection-${currentLocale.value}`,
+  () => strapi.getCapacitySection(currentLocale.value),
+  {
+    watch: [currentLocale],
+  }
+);
+
+const { data: machineCards } = await useAsyncData(
+  `machineCards-${currentLocale.value}`,
+  () => strapi.getMachineCards(currentLocale.value),
+  {
+    watch: [currentLocale],
+  }
+);
+
+const { data: machineSection } = await useAsyncData(
+  `machineSection-${currentLocale.value}`,
+  () => strapi.getMachineSection(currentLocale.value),
+  {
+    watch: [currentLocale],
+  }
+);
+
+const paused = ref(false);
+const items = computed(() => machineCards.value?.data || []);
 
 const duplicatedMachines = computed(() =>
-  [...machines, ...machines].map((entry, index) => ({ ...entry, uid: `${entry.title}-${index}` }))
-)
+  [...items.value, ...items.value].map((entry, index) => ({ ...entry, uid: `${entry.title}-${index}` }))
+);
 </script>
 
 <style scoped>

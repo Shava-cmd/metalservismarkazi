@@ -4,6 +4,8 @@ import type { AboutCard, AboutSection } from "~/src/types/About";
 import type { StrapiQueryMany, StrapiQueryOne } from "~/src/types/StrapiQuery";
 import type { ServiceSection, ServicesCard } from "~/src/types/Service";
 import type { StructureCard, StructureSection } from "~/src/types/Structure";
+import type { CapacitySection, CapacityCard } from "~/src/types/Capacity";
+import type { MachineCard, MachineSection } from "~/src/types/Machine";
 
 const apiBaseUrl = useRuntimeConfig().public.apiEndpoint;
 
@@ -33,11 +35,32 @@ class StrapiUtils {
   }
 
   public getStructureSection(currentLocale: string): Promise<StrapiQueryOne<StructureSection>> {
-    return $fetch<StrapiQueryOne<StructureSection>>(`${apiBaseUrl}/api/structure-section`, this.queryParams(currentLocale));
+    return $fetch<StrapiQueryOne<StructureSection>>(
+      `${apiBaseUrl}/api/structure-section`,
+      this.queryParams(currentLocale)
+    );
   }
 
   public getStructureCards(currentLocale: string): Promise<StrapiQueryMany<StructureCard>> {
     return $fetch<StrapiQueryMany<StructureCard>>(`${apiBaseUrl}/api/structure-cards`, this.queryParams(currentLocale));
+  }
+
+  public getCapacitySection(currentLocale: string): Promise<StrapiQueryOne<CapacitySection>> {
+    return $fetch<StrapiQueryOne<CapacitySection>>(
+      `${apiBaseUrl}/api/capacity-section`,
+      this.queryParams(currentLocale)
+    );
+  }
+  public getCapacityCards(currentLocale: string): Promise<StrapiQueryMany<CapacityCard>> {
+    return $fetch<StrapiQueryMany<CapacityCard>>(`${apiBaseUrl}/api/capacity-cards`, this.queryParams(currentLocale));
+  }
+
+  public getMachineSection(currentLocale: string): Promise<StrapiQueryOne<MachineSection>> {
+    return $fetch<StrapiQueryOne<MachineSection>>(`${apiBaseUrl}/api/machine-section`, this.queryParams(currentLocale));
+  }
+
+  public getMachineCards(currentLocale: string): Promise<StrapiQueryMany<MachineCard>> {
+    return $fetch<StrapiQueryMany<MachineCard>>(`${apiBaseUrl}/api/machine-cards`, this.queryParams(currentLocale));
   }
 
   private queryParams(locale: string): { query: { populate: string; locale: string } } {
