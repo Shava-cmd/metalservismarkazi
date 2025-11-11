@@ -6,6 +6,7 @@ import type { ServiceSection, ServicesCard } from "~/src/types/Service";
 import type { StructureCard, StructureSection } from "~/src/types/Structure";
 import type { CapacitySection, CapacityCard } from "~/src/types/Capacity";
 import type { MachineCard, MachineSection } from "~/src/types/Machine";
+import type { AdvantagesCard, AdvantagesSection } from "~/src/types/Advantages";
 
 const apiBaseUrl = useRuntimeConfig().public.apiEndpoint;
 
@@ -61,6 +62,20 @@ class StrapiUtils {
 
   public getMachineCards(currentLocale: string): Promise<StrapiQueryMany<MachineCard>> {
     return $fetch<StrapiQueryMany<MachineCard>>(`${apiBaseUrl}/api/machine-cards`, this.queryParams(currentLocale));
+  }
+
+  public getAdvantagesSection(currentLocale: string): Promise<StrapiQueryOne<AdvantagesSection>> {
+    return $fetch<StrapiQueryOne<AdvantagesSection>>(
+      `${apiBaseUrl}/api/advantages-section`,
+      this.queryParams(currentLocale)
+    );
+  }
+
+  public getAdvantagesCards(currentLocale: string): Promise<StrapiQueryMany<AdvantagesCard>> {
+    return $fetch<StrapiQueryMany<AdvantagesCard>>(
+      `${apiBaseUrl}/api/advantages-cards`,
+      this.queryParams(currentLocale)
+    );
   }
 
   private queryParams(locale: string): { query: { populate: string; locale: string } } {

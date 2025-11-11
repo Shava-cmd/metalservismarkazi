@@ -1,10 +1,10 @@
 <template>
   <section id="advantages" class="advantages">
     <div class="container-section">
-      <h2 class="section-title advantages__title">Преимущества</h2>
+      <h2 class="section-title advantages__title">{{ advantagesSection?.data?.title }}</h2>
 
       <div class="advantages__grid">
-        <article v-for="advantage in advantages" :key="advantage.title" class="advantages__card">
+        <article v-for="advantage in advantagesCards?.data" :key="advantage.documentId" class="advantages__card">
           <span class="advantages__icon" v-html="advantage.icon" />
           <h3>{{ advantage.title }}</h3>
           <p>{{ advantage.description }}</p>
@@ -16,33 +16,23 @@
 </template>
 
 <script setup lang="ts">
-const advantages = [
+const currentLocale = useState<string>("locale", () => "ru");
+
+const { data: advantagesSection } = await useAsyncData(
+  `advantagesSection-${currentLocale.value}`,
+  () => strapi.getAdvantagesSection(currentLocale.value),
   {
-    title: 'Собственная литейная база',
-    description: 'Производство отливок из стали, чугуна и бронзы',
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 16h.01" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M16 16h.01" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M3 19a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V8.5a.5.5 0 0 0-.77-.42l-4.46 2.84A.5.5 0 0 1 15 10.5v-2a.5.5 0 0 0-.77-.42L9.77 10.92A.5.5 0 0 1 9 10.5V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M8 16h.01" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>'
-  },
-  {
-    title: 'Опытный персонал',
-    description: '541 сотрудник, профильные специалисты',
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M16 3.13a4 4 0 0 1 0 7.74" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M22 21v-2a4 4 0 0 0-3-3.87" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><circle cx="9" cy="7" r="4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>'
-  },
-  {
-    title: 'Современное оборудование',
-    description: '140 единиц станков, 244 000 станко-часов',
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="m15.7 6.3-2 2a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.1-3.1c.32-.32.86-.22.98.22a6 6 0 0 1-8.26 7.06l-7.91 7.91a1 1 0 0 1-3-3l7.91-7.91a6 6 0 0 1 7.06-8.26c.44.12.54.66.22.98z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>'
-  },
-  {
-    title: 'Контроль качества',
-    description: 'ISO и внутренние стандарты',
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21.8 10A10 10 0 1 1 17 3.34" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="m9 11 3 3L22 4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>'
-  },
-  {
-    title: 'Быстрая доставка',
-    description: 'Собственная логистика и партнёры',
-    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M15 18H9" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.62l-3.48-4.35A1 1 0 0 0 17.52 8H14" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><circle cx="17" cy="18" r="2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/><circle cx="7" cy="18" r="2" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>'
+    watch: [currentLocale],
   }
-]
+);
+
+const { data: advantagesCards } = await useAsyncData(
+  `advantagesCards-${currentLocale.value}`,
+  () => strapi.getAdvantagesCards(currentLocale.value),
+  {
+    watch: [currentLocale],
+  }
+);
 </script>
 
 <style scoped>

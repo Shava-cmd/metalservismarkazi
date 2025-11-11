@@ -1,0 +1,27 @@
+{
+  "kind": "singleType",
+  "collectionName": "advantages_sections",
+  "info": {
+    "singularName": "advantages-section",
+    "pluralName": "advantages-sections",
+    "displayName": "AdvantagesSection"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    }
+  }
+}

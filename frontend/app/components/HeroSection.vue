@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 import strapi from "@/utils/strapi";
+
 const currentLocale = useState<string>("locale", () => "ru");
 
 const { data: page } = await useAsyncData(

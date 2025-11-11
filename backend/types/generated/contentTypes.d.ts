@@ -457,6 +457,82 @@ export interface ApiAboutSectionAboutSection extends Struct.SingleTypeSchema {
   };
 }
 
+export interface ApiAdvantagesCardAdvantagesCard extends Struct.CollectionTypeSchema {
+  collectionName: "advantages_cards";
+  info: {
+    displayName: "AdvantagesCard";
+    pluralName: "advantages-cards";
+    singularName: "advantages-card";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    description: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    icon: Schema.Attribute.Media<"images"> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::advantages-card.advantages-card">;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
+export interface ApiAdvantagesSectionAdvantagesSection extends Struct.SingleTypeSchema {
+  collectionName: "advantages_sections";
+  info: {
+    displayName: "AdvantagesSection";
+    pluralName: "advantages-sections";
+    singularName: "advantages-section";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::advantages-section.advantages-section">;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiCapacityCardCapacityCard extends Struct.CollectionTypeSchema {
   collectionName: "capacity_cards";
   info: {
@@ -1249,6 +1325,8 @@ declare module "@strapi/strapi" {
       "admin::user": AdminUser;
       "api::about-card.about-card": ApiAboutCardAboutCard;
       "api::about-section.about-section": ApiAboutSectionAboutSection;
+      "api::advantages-card.advantages-card": ApiAdvantagesCardAdvantagesCard;
+      "api::advantages-section.advantages-section": ApiAdvantagesSectionAdvantagesSection;
       "api::capacity-card.capacity-card": ApiCapacityCardCapacityCard;
       "api::capacity-section.capacity-section": ApiCapacitySectionCapacitySection;
       "api::hero-section.hero-section": ApiHeroSectionHeroSection;
