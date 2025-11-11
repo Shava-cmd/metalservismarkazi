@@ -48,7 +48,7 @@ services:
       - strapiDB
 
   strapiDB:
-    #platform: linux/amd64 #for platform error on Apple M1 chips
+    platform: linux/arm64 #for platform error on Apple M1 chips
     restart: unless-stopped
     env_file: .env
     image: postgres:18-alpine
