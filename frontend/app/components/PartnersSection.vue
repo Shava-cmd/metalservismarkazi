@@ -2,7 +2,7 @@
   <section id="partners" class="partners">
     <div class="container-section">
       <div class="partners__card" @mouseenter="paused = true" @mouseleave="paused = false">
-        <h2 class="section-title partners__title">Партнёры и клиенты</h2>
+        <h2 class="section-title partners__title">{{ partnersSection?.data?.title }}</h2>
 
         <div class="partners__carousel">
           <div :class="['partners__track', 'marquee-track', { 'marquee-paused': paused }]">
@@ -18,22 +18,33 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref } from "vue";
 
-const partners = [
-  { name: 'Uzmetkombinat', logo: 'https://www.uzbeksteel.eu/wp-content/uploads/2022/07/Uzmetkombinat-logo_Europe-trading-house-1-2.png' },
-  { name: 'UzmilliBank', logo: 'https://openinfo.uz/media/organization_logos/nbu.png' },
-  { name: 'TransLogix', logo: 'https://iconape.com/wp-content/files/dp/299224/png/299224.png' },
-  { name: 'AsiaConstruct', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTH4hjLnV7njAAOqVc4-2d4yY9Q7eWhqgtmuA&s' },
-  { name: 'PowerTech', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgffk43G0bv7xxPpwtnaeX_H_MbNAd4zrR0g&s' },
-  { name: 'AgroMash', logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3ztvZ6jWAAaez3fpK66e68d4lc1hH3FcgyA&s' }
-]
+const currentLocale = useState<string>("locale", () => "ru");
+const apiEndpoint = useRuntimeConfig().public.apiEndpoint;
 
-const paused = ref(false)
+const { data: partners } = await useAsyncData(
+  `partners-${currentLocale.value}`,
+  () => strapi.getPartners(currentLocale.value),
+  {
+    watch: [currentLocale],
+  }
+);
+
+const { data: partnersSection } = await useAsyncData(
+  `partnersSection-${currentLocale.value}`,
+  () => strapi.getPartnerSection(currentLocale.value),
+  {
+    watch: [currentLocale],
+  }
+);
+
+const paused = ref(false);
+const items = computed(() => partners.value?.data.map((entry) => ({ ...entry, logo: entry?.image?.url })) || []);
 
 const duplicatedPartners = computed(() =>
-  [...partners, ...partners].map((entry, index) => ({ ...entry, uid: `${entry.name}-${index}` }))
-)
+  [...items.value, ...items.value].map((entry, index) => ({ ...entry, uid: `${entry.name}-${index}` }))
+);
 </script>
 
 <style scoped>

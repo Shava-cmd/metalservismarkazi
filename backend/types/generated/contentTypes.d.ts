@@ -805,6 +805,76 @@ export interface ApiNavNav extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiPartnerSectionPartnerSection extends Struct.SingleTypeSchema {
+  collectionName: "partner_sections";
+  info: {
+    displayName: "PartnerSection";
+    pluralName: "partner-sections";
+    singularName: "partner-section";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::partner-section.partner-section">;
+    publishedAt: Schema.Attribute.DateTime;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
+export interface ApiPartnerPartner extends Struct.CollectionTypeSchema {
+  collectionName: "partners";
+  info: {
+    displayName: "Partner";
+    pluralName: "partners";
+    singularName: "partner";
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+    image: Schema.Attribute.Media<"images"> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<"oneToMany", "api::partner.partner">;
+    name: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: false;
+        };
+      }>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<"oneToOne", "admin::user"> & Schema.Attribute.Private;
+  };
+}
+
 export interface ApiServiceSectionServiceSection extends Struct.SingleTypeSchema {
   collectionName: "service_sections";
   info: {
@@ -1372,6 +1442,8 @@ declare module "@strapi/strapi" {
       "api::machine-card.machine-card": ApiMachineCardMachineCard;
       "api::machine-section.machine-section": ApiMachineSectionMachineSection;
       "api::nav.nav": ApiNavNav;
+      "api::partner-section.partner-section": ApiPartnerSectionPartnerSection;
+      "api::partner.partner": ApiPartnerPartner;
       "api::service-section.service-section": ApiServiceSectionServiceSection;
       "api::services-card.services-card": ApiServicesCardServicesCard;
       "api::structure-card.structure-card": ApiStructureCardStructureCard;

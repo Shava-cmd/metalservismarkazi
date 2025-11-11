@@ -8,6 +8,8 @@ import type { CapacitySection, CapacityCard } from "~/src/types/Capacity";
 import type { MachineCard, MachineSection } from "~/src/types/Machine";
 import type { AdvantagesCard, AdvantagesSection } from "~/src/types/Advantages";
 import type { GallerySection } from "~/src/types/Gallery";
+import type { Partner, PartnerSection } from "~/src/types/Partner";
+
 
 const apiBaseUrl = useRuntimeConfig().public.apiEndpoint;
 
@@ -81,6 +83,20 @@ class StrapiUtils {
 
   public getGallerySection(currentLocale: string): Promise<StrapiQueryOne<GallerySection>> {
     return $fetch<StrapiQueryOne<GallerySection>>(`${apiBaseUrl}/api/gallery-section`, this.queryParams(currentLocale));
+  }
+
+  public getPartnerSection(currentLocale: string): Promise<StrapiQueryOne<PartnerSection>> {
+    return $fetch<StrapiQueryOne<PartnerSection>>(
+      `${apiBaseUrl}/api/partner-section`,
+      this.queryParams(currentLocale)
+    );
+  }
+
+  public getPartners(currentLocale: string): Promise<StrapiQueryMany<Partner>> {
+    return $fetch<StrapiQueryMany<Partner>>(
+      `${apiBaseUrl}/api/partners`,
+      this.queryParams(currentLocale)
+    );
   }
 
   private queryParams(locale: string): { query: { populate: string; locale: string } } {
