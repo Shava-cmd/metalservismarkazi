@@ -39,7 +39,9 @@ const { data: aboutCards } = await useAsyncData(
 
 <style scoped>
 .about {
-  padding-block: clamp(4rem, 10vw, 5.5rem);
+  /* padding-block: clamp(4rem, 10vw, 5.5rem); */
+  padding-top: 5rem;
+  padding-bottom: 2rem;
   background: #fff;
 }
 
