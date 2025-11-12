@@ -47,7 +47,7 @@
     </transition>
 
     <nav :class="['site-header__mobile', { 'site-header__mobile--open': mobileOpen }]">
-      <div class="container-section">
+      <div class="container-section" :class="{ 'site-header--scrolled': isScrolled }">
         <button
           v-for="item in navItems?.data"
           :key="item.navID"
