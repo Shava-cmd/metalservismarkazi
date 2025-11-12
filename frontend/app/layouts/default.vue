@@ -4,7 +4,7 @@
     <main>
       <slot />
     </main>
-    <!-- <SiteFooter /> -->
+    <SiteFooter />
   </div>
 </template>
 
