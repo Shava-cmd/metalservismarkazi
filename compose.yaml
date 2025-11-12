@@ -22,7 +22,7 @@ services:
       dockerfile: Dockerfile
     # image: strapi:latest    
     restart: unless-stopped
-    user: "${STRAPI_UID:-1000}:${STRAPI_GID:-1000}"
+    # user: "${STRAPI_UID:-1000}:${STRAPI_GID:-1000}"
     env_file: .env
     environment:
       DATABASE_CLIENT: ${DATABASE_CLIENT}
@@ -37,12 +37,12 @@ services:
       NODE_ENV: ${NODE_ENV}
     ports:
       - "${STRAPI_PORT}:${STRAPI_PORT}"
-    volumes:
-      - ./backend/config:/opt/app/config
-      - ./backend/src:/opt/app/src
-      - ./backend/package.json:/opt/package.json
-      - ./.env:/opt/app/.env
-      - ./backend/public/uploads:/opt/app/public/uploads
+    # volumes:
+      # - ./backend/config:/opt/app/config
+      # - ./backend/src:/opt/app/src
+      # - ./backend/package.json:/opt/package.json
+      # - ./.env:/opt/app/.env
+      # - ./backend/public/uploads:/opt/app/public/uploads
     networks:
       - strapi-network
     depends_on:
