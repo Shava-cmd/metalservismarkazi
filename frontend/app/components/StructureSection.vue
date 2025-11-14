@@ -5,12 +5,17 @@
 
       <div class="structure__scroller" @mouseenter="paused = true" @mouseleave="paused = false">
         <div :class="['structure__track', 'marquee-track', { 'marquee-paused': paused }]">
-          <article v-for="item in duplicatedItems" :key="item.uid" class="structure__card">
-            <a :href="`/page/${item?.page?.documentId}`">
+          <article v-for="item in duplicatedItems" :key="item.documentId" class="structure__card">
+            <a v-if="item?.page" :href="`/page/${item?.page?.documentId}`">
               <h3>{{ item?.title }}</h3>
               <p>{{ item?.description }}</p>
               <span class="structure__indicator" />
             </a>
+            <template v-else>
+              <h3>{{ item?.title }}</h3>
+              <p>{{ item?.description }}</p>
+              <span class="structure__indicator" />
+            </template>
           </article>
         </div>
       </div>
@@ -43,9 +48,7 @@ const { data: structureCard } = await useAsyncData(
 const items = computed(() => structureCard.value?.data || []);
 
 const paused = ref(false);
-const duplicatedItems = computed(() =>
-  [...items.value, ...items.value].map((entry, index) => ({ ...entry, uid: `${entry.title}-${index}` }))
-);
+const duplicatedItems = computed(() => [...items.value, ...items.value]);
 </script>
 
 <style scoped>
