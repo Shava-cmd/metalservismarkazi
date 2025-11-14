@@ -46,7 +46,7 @@ const { data: gallerySection } = await useAsyncData(
   }
 );
 
-const images = gallerySection.value?.data?.images.map((img) => `${apiEndpoint}${img.url}`) || [];
+const images = gallerySection.value?.data?.images?.map((img) => `${apiEndpoint}${img.url}`) || [];
 const activeIndex = ref(0);
 const intervalId = ref<number | null>(null);
 
