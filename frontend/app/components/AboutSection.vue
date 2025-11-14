@@ -4,7 +4,7 @@
       <h2 class="section-title about__title">{{ aboutSection?.data?.title }}</h2>
 
       <div class="about__text">
-        <p v-html="aboutSection?.data?.text"></p>
+        <p v-html="DOMPurify.sanitize(aboutSection?.data?.text || '')"></p>
       </div>
 
       <div class="about__grid">
@@ -18,6 +18,8 @@
 </template>
 
 <script setup lang="ts">
+import DOMPurify from "dompurify";
+
 const currentLocale = useState<string>("locale");
 
 const { data: aboutSection } = await useAsyncData(
