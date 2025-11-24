@@ -6,7 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import DOMPurify from 'dompurify';
+import DOMPurify from "dompurify";
 
 const url = useRoute().params.url as string;
 const currentLocale = useState<string>("locale", () => "ru");
@@ -19,3 +19,9 @@ const { data: page } = await useAsyncData(
   }
 );
 </script>
+
+<style scoped lang="css">
+.container-section {
+  margin-top: 100px;
+}
+</style>

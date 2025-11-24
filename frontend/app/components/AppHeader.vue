@@ -1,5 +1,5 @@
 <template>
-  <header :class="['site-header', { 'site-header--scrolled': isScrolled, 'site-header--sticky': !isHomePage }]">
+  <header :class="['site-header', { 'site-header--scrolled': isScrolled }]">
     <div class="container-section site-header__inner">
       <a class="site-header__logo" type="button" href="/">MSM</a>
 
