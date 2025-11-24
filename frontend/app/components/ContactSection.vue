@@ -26,10 +26,12 @@
 
           <div class="contact__actions">
             <button class="btn-primary" type="submit" :disabled="state === 'sending'">
-              {{ state === 'sending' ? 'Отправка…' : 'Отправить заявку' }}
+              {{ state === "sending" ? "Отправка…" : "Отправить заявку" }}
             </button>
             <span v-if="state === 'success'" class="contact__status contact__status--success">Заявка отправлена</span>
-            <span v-else-if="state === 'error'" class="contact__status contact__status--error">Ошибка, попробуйте позже</span>
+            <span v-else-if="state === 'error'" class="contact__status contact__status--error"
+              >Ошибка, попробуйте позже</span
+            >
           </div>
         </form>
 
@@ -42,11 +44,13 @@
           </ul>
           <div class="contact__map">
             <iframe
-              title="Карта"
+              src="https://www.google.com/maps/embed?pb=!1m24!1m12!1m3!1d24371.855985511334!2d69.24057048279913!3d40.22058420866007!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m9!3e3!4m3!3m2!1d40.220582199999996!2d69.2745932!4m3!3m2!1d40.231078499999995!2d69.2764514!5e0!3m2!1sru!2s!4v1764009477811!5m2!1sru!2s"
+              width="600"
+              height="450"
+              style="border: 0"              
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
-              src="https://maps.google.com/maps?q=Bunyodkor%2084,%20Shirin,%20Uzbekistan&t=m&z=16&output=embed&iwloc=near"
-            />
+            ></iframe>
           </div>
         </aside>
       </div>
@@ -55,41 +59,41 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref } from "vue";
 
 interface ContactForm {
-  name: string
-  company: string
-  phone: string
-  message: string
+  name: string;
+  company: string;
+  phone: string;
+  message: string;
 }
 
-type FormState = 'idle' | 'sending' | 'success' | 'error'
+type FormState = "idle" | "sending" | "success" | "error";
 
 const form = reactive<ContactForm>({
-  name: '',
-  company: '',
-  phone: '',
-  message: ''
-})
+  name: "",
+  company: "",
+  phone: "",
+  message: "",
+});
 
-const state = ref<FormState>('idle')
+const state = ref<FormState>("idle");
 
 const handleSubmit = async () => {
-  state.value = 'sending'
+  state.value = "sending";
 
   try {
-    await new Promise((resolve) => setTimeout(resolve, 1200))
-    state.value = 'success'
-    form.name = ''
-    form.company = ''
-    form.phone = ''
-    form.message = ''
+    await new Promise((resolve) => setTimeout(resolve, 1200));
+    state.value = "success";
+    form.name = "";
+    form.company = "";
+    form.phone = "";
+    form.message = "";
   } catch (error) {
-    console.error('Contact form submission error', error)
-    state.value = 'error'
+    console.error("Contact form submission error", error);
+    state.value = "error";
   }
-}
+};
 </script>
 
 <style scoped>
